@@ -1,0 +1,16 @@
+{
+	"name": "lamaweb/jobs/blueghost",
+	"description": "Jobs: BluGhost",
+	"type": "project",
+	"require": {
+		"php": ">= 7.4"
+	},
+	"require-dev": {
+	},
+	"minimum-stability": "stable",
+	"config": {
+		"platform": {
+			"php": "7.4"
+		}
+	}
+}

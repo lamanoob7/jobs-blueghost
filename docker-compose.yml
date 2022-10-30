@@ -1,0 +1,87 @@
+version: '3.5'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: blueghost-nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    expose:
+      - 80
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./docker/nginx-proxy/nginx.tmpl /app/nginx.tmpl
+    networks:
+      - blueghost-network
+
+  blueghost-db:
+    image: mariadb
+    container_name: blueghost-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: blueghost
+    volumes:
+      - ./docker/mariadb/conf.d:/etc/mysql/conf.d
+      - ./docker/db-data:/var/lib/mysql
+      - ./docs/install:/var/install
+    networks:
+      - blueghost-network
+
+  blueghost-adminer:
+    image: adminer
+    container_name: blueghost-adminer
+    restart: unless-stopped
+    ports:
+      - 8081:8080
+    depends_on:
+      - blueghost-db
+    links:
+      - blueghost-db:db
+    networks:
+      - blueghost-network
+
+  blueghost-php-composer:
+    build: "docker/php74"
+    volumes:
+      - ".:/var/www/html"
+    networks:
+      - blueghost-network
+    command: cd project && composer install
+
+  blueghost-php:
+    build: "docker/php74"
+    volumes:
+      - ".:/var/www/html"
+    links:
+      - blueghost-db:db
+    networks:
+      - blueghost-network
+    depends_on:
+      - blueghost-db
+    environment:
+      XDEBUG_MODE: debug
+      XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003
+    restart: unless-stopped
+
+  blueghost-nginx:
+    build: "docker/nginx/symfony"
+    ports:
+      - "8011:80"
+    expose:
+      - 8011
+    volumes:
+      - "./:/var/www/html"
+    networks:
+      - blueghost-network
+    environment:
+      - VIRTUAL_HOST=blueghost-sandbox.local
+    links:
+      - blueghost-php:php
+    depends_on:
+      - blueghost-php
+    restart: unless-stopped
+
+networks:
+  blueghost-network:
+    driver: bridge

@@ -1,0 +1,5 @@
+.idea
+/vendor/
+/docker/db-data
+!/docker/db-data/.gitkeep
+app/config/config.local.neon

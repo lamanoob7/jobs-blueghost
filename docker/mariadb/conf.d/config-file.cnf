@@ -1,0 +1,2 @@
+# MariaDB database server configuration file.
+max_allowed_packet      = 128M
