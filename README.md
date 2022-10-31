@@ -85,6 +85,9 @@ mysql -uroot -pblueghost < /var/install/install.sql && exit
 ```
 
 ## Vzpracování zadání
+20min - db + migrace 
+25min - make context + zacatek slug
+
 
 ### Příprava Dockeru a prostředí
 
