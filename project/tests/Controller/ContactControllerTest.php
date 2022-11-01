@@ -11,7 +11,7 @@ class ContactControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private ContactRepository $repository;
-    private string $path = '/contact/';
+    private string $path = '/';
 
     protected function setUp(): void
     {
@@ -38,37 +38,36 @@ class ContactControllerTest extends WebTestCase
     {
         $originalNumObjectsInRepository = count($this->repository->findAll());
 
-        $this->markTestIncomplete();
         $this->client->request('GET', sprintf('%snew', $this->path));
 
         self::assertResponseStatusCodeSame(200);
 
         $this->client->submitForm('Save', [
-            'contact[firstName]' => 'Testing',
-            'contact[lastName]' => 'Testing',
-            'contact[phoneNumber]' => 'Testing',
-            'contact[email]' => 'Testing',
+            'contact[firstName]' => 'firstName',
+            'contact[lastName]' => 'lastName',
+            'contact[phoneNumber]' => '123456',
+            'contact[email]' => 'test@test.test',
             'contact[note]' => 'Testing',
         ]);
 
-        self::assertResponseRedirects('/contact/');
+        self::assertResponseRedirects('/');
 
         self::assertSame($originalNumObjectsInRepository + 1, count($this->repository->findAll()));
     }
 
     public function testShow(): void
     {
-        $this->markTestIncomplete();
         $fixture = new Contact();
-        $fixture->setFirstName('My Title');
-        $fixture->setLastName('My Title');
-        $fixture->setPhoneNumber('My Title');
-        $fixture->setEmail('My Title');
-        $fixture->setNote('My Title');
+        $fixture->setFirstName('My FirstName');
+        $fixture->setLastName('My LastName');
+        $fixture->setPhoneNumber('123456789');
+        $fixture->setEmail('My@test.email');
+        $fixture->setNote('My note');
+        $fixture->setSlug('my-first-name-my-last-name');
 
         $this->repository->add($fixture, true);
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getSlug()));
 
         self::assertResponseStatusCodeSame(200);
         self::assertPageTitleContains('Contact');
@@ -78,58 +77,58 @@ class ContactControllerTest extends WebTestCase
 
     public function testEdit(): void
     {
-        $this->markTestIncomplete();
         $fixture = new Contact();
-        $fixture->setFirstName('My Title');
-        $fixture->setLastName('My Title');
-        $fixture->setPhoneNumber('My Title');
-        $fixture->setEmail('My Title');
-        $fixture->setNote('My Title');
+        $fixture->setFirstName('My');
+        $fixture->setLastName('Title');
+        $fixture->setPhoneNumber('123456');
+        $fixture->setEmail('title@my.test');
+        $fixture->setNote('My Title note');
+        $fixture->setSlug('my-title');
 
         $this->repository->add($fixture, true);
 
-        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
+        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getSlug()));
 
         $this->client->submitForm('Update', [
-            'contact[firstName]' => 'Something New',
-            'contact[lastName]' => 'Something New',
-            'contact[phoneNumber]' => 'Something New',
-            'contact[email]' => 'Something New',
-            'contact[note]' => 'Something New',
+            'contact[firstName]' => 'MyNew',
+            'contact[lastName]' => 'TitleNew',
+            'contact[phoneNumber]' => '987654321',
+            'contact[email]' => 'new-test@title.mail',
+            'contact[note]' => 'My Title note',
         ]);
 
-        self::assertResponseRedirects('/contact/');
+        self::assertResponseRedirects('/');
 
         $fixture = $this->repository->findAll();
 
-        self::assertSame('Something New', $fixture[0]->getFirstName());
-        self::assertSame('Something New', $fixture[0]->getLastName());
-        self::assertSame('Something New', $fixture[0]->getPhoneNumber());
-        self::assertSame('Something New', $fixture[0]->getEmail());
-        self::assertSame('Something New', $fixture[0]->getNote());
+        self::assertSame('MyNew', $fixture[0]->getFirstName());
+        self::assertSame('TitleNew', $fixture[0]->getLastName());
+        self::assertSame('987654321', $fixture[0]->getPhoneNumber());
+        self::assertSame('new-test@title.mail', $fixture[0]->getEmail());
+        self::assertSame('My Title note', $fixture[0]->getNote());
     }
 
     public function testRemove(): void
     {
-        $this->markTestIncomplete();
 
         $originalNumObjectsInRepository = count($this->repository->findAll());
 
         $fixture = new Contact();
-        $fixture->setFirstName('My Title');
-        $fixture->setLastName('My Title');
-        $fixture->setPhoneNumber('My Title');
-        $fixture->setEmail('My Title');
-        $fixture->setNote('My Title');
+        $fixture->setFirstName('My');
+        $fixture->setLastName('Title');
+        $fixture->setPhoneNumber('123456');
+        $fixture->setEmail('title@my.test');
+        $fixture->setNote('My Title note');
+        $fixture->setSlug('my-title');
 
         $this->repository->add($fixture, true);
 
         self::assertSame($originalNumObjectsInRepository + 1, count($this->repository->findAll()));
 
-        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
+        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getSlug()));
         $this->client->submitForm('Delete');
 
         self::assertSame($originalNumObjectsInRepository, count($this->repository->findAll()));
-        self::assertResponseRedirects('/contact/');
+        self::assertResponseRedirects('/');
     }
 }

@@ -68,8 +68,8 @@ Pro zadavatele je důležité, jak je aplikace napsána, nikoliv kolik funkcí m
 minimalizaci času nad ní stráveného a sdělení kolik času bylo třeba, aby byla aplikace uvedena
 do stavu, který budete posílat.
 
-## spustění
-### docker kontejnery
+## Spustění
+### Docker kontejnery
 vytvoření všech docker containerů
 ```
 docker-compose up --build -d
@@ -85,14 +85,40 @@ mysql -uroot -pblueghost < /var/install/install.sql && exit
 ```
 
 ## Vzpracování zadání
-20min - db + migrace 
-25min - make context + zacatek slug
-30min - slug podle navodu
-45min - paginace (zasek na )
+Celkově mě zpracování zadání trvalo kolem 3-4 hodin. Z toho asi 50%-70% času bylo dohledávání informací z dokumentací a článků. Zbylý čas bylo na vlastní psaní kódu nebo využívání předdefinovaných funkcí.
 
+K tomu další 3 hodiny byly na vytvoreni docker prostredi pro Symfony a zprovozneni vnitřních vazeb Docker sítě.
+
+### Jednotlivé části
+#### Vytvoření databáze
+Vytvoření databáze jsem provedl pomocí `make:entity`, `make:migration` a `doctrine:migrations:migrate`
+
+Doba: 20 min
+
+#### Vytvoření databáze
+Dále jsem vytvořil CRUD znovu za využití symfony vestavěnych funkcí `make:crud`
+
+Doba: 15 min
+#### Vytvoření slugu pro URL
+Pro SEO optimalizovana URL jsem se rozhodl u entity `Contact` vytvořit `slug` pro snadné a automatizované vytváření "user friendly" URL podle návodu, který jsem našel na internetu.
+
+Doba: 40 min
+
+#### Paginace
+Poté co jsem si připomněl, že existuje Knp Bundle, který toto pokrývá jsem ho nasadil a pak se chvíli trápil než jsem si uvědomil, že špatně pracuji s EntityManagerem, ale vše hned fungovalo.
+
+Doba: 45 min
+#### Modal
+Modalové okno mi trvalo nejdéle, protože jsem musel napojit přes Encore správné balíky a poté lépe porozumnět jak Java Scriptu, tak i Stimulusu
+
+Doba: 90 - 120 min
+
+### Testy
+
+Jako poslední jsem jenom přidal resp. upravil vygenerované testy, aby odpovídaly změnám v controlleru a entitě 
+
+- v controlleru jsem změnil routy z `id` na `slug`
+- v entitě jsem přidal podmínku, že `email` musí mít formát emailu
 
 ### Příprava Dockeru a prostředí
-
 Příprava dockeru částečně z mého starého repozitáře [GitLab Jobs](https://gitlab.com/lamaweb-job/ulozto) a aktualizace PHP, NGINX a zmena na Symfony 5 trvala asi 3 hodiny.
-
-### Zpracování aplikace
