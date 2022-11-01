@@ -49,6 +49,11 @@ CREATE TABLE `messenger_messages` (
   KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- ####################################################
+-- ##### TEST DB
+-- ####################################################
+CREATE DATABASE `blueghost_test` COLLATE 'utf8_unicode_ci';
+
 USE blueghost_test
 
 DROP TABLE IF EXISTS `contact`;

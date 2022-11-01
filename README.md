@@ -84,10 +84,10 @@ a pak je potřeba spustit skript na vytvoření DB
 mysql -uroot -pblueghost < /var/install/install.sql && exit
 ```
 
-## Vzpracování zadání
+## Vypracování zadání
 Celkově mě zpracování zadání trvalo kolem 3-4 hodin. Z toho asi 50%-70% času bylo dohledávání informací z dokumentací a článků. Zbylý čas bylo na vlastní psaní kódu nebo využívání předdefinovaných funkcí.
 
-K tomu další 3 hodiny byly na vytvoreni docker prostredi pro Symfony a zprovozneni vnitřních vazeb Docker sítě.
+K tomu další 3-4 hodiny byly na vytvoření docker prostředí pro Symfony a zprovoznění vnitřních vazeb Docker sítě.
 
 ### Jednotlivé části
 #### Vytvoření databáze
@@ -121,4 +121,4 @@ Jako poslední jsem jenom přidal resp. upravil vygenerované testy, aby odpoví
 - v entitě jsem přidal podmínku, že `email` musí mít formát emailu
 
 ### Příprava Dockeru a prostředí
-Příprava dockeru částečně z mého starého repozitáře [GitLab Jobs](https://gitlab.com/lamaweb-job/ulozto) a aktualizace PHP, NGINX a zmena na Symfony 5 trvala asi 3 hodiny.
+Příprava dockeru částečně z mého starého repozitáře [GitLab Jobs](https://gitlab.com/lamaweb-job/ulozto) a aktualizace PHP, NGINX a změna na Symfony 5 trvala asi 3-4 hodiny.
