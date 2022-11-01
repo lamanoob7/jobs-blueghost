@@ -4,50 +4,68 @@
 
 {% block body %}
     <h1>Contact index</h1>
-    <p class="count">
-        Total: {{ pagination.getTotalItemCount }}
-    </p>
+    
+    <div {{ stimulus_controller('modal') }}>
+        <p class="count">
+            Total: {{ pagination.getTotalItemCount }}
+        </p>
 
-    <p>
-        <a href="{{ path('app_contact_new') }}">Create new</a>
-    </p>
+        <p>
+            <a href="{{ path('app_contact_new') }}">Create new</a>
+        </p>
 
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'Id', 'c.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'FirstName', 'c.firstName') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'LastName', 'c.lastName') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'PhoneNumber', 'c.phoneNumber') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Email', 'c.email') }}</th>
-                <th>Note</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for contact in pagination %}
-            <tr>
-                <td>{{ contact.id }}</td>
-                <td>{{ contact.firstName }}</td>
-                <td>{{ contact.lastName }}</td>
-                <td>{{ contact.phoneNumber }}</td>
-                <td>{{ contact.email }}</td>
-                <td>{{ contact.note }}</td>
-                <td>
-                    <a href="{{ path('app_contact_show', {'slug': contact.slug}) }}">show</a>
-                    <a href="{{ path('app_contact_edit', {'slug': contact.slug}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ knp_pagination_sortable(pagination, 'Id', 'c.id') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'FirstName', 'c.firstName') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'LastName', 'c.lastName') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'PhoneNumber', 'c.phoneNumber') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Email', 'c.email') }}</th>
+                    <th>Note</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for contact in pagination %}
+                <tr>
+                    <td>{{ contact.id }}</td>
+                    <td>{{ contact.firstName }}</td>
+                    <td>{{ contact.lastName }}</td>
+                    <td>{{ contact.phoneNumber }}</td>
+                    <td>{{ contact.email }}</td>
+                    <td>
+                    <button class="btn btn-primary btn-sm" data-action="click->modal#openModal" data-modal-body="{{ contact.note }}" data-modal-content="{{ contact.note }}" data-content="{{ contact.note }}">Show note</button>
+                    </td>
+                    <td>
+                        <a href="{{ path('app_contact_show', {'slug': contact.slug}) }}">show</a>
+                        <a href="{{ path('app_contact_edit', {'slug': contact.slug}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        {# <div {{ stimulus_controller('modal') }}>
+            <button
+                    class="btn btn-primary btn-sm"
+                    data-action="modal#openModal"
+                >
+                Add+
+            </button>
+
+            {{ include('_modal.html.twig') }}
+        </div> #}
+        {{ include('_modal.html.twig') }}
     </div>
+
 {% endblock %}

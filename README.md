@@ -88,6 +88,7 @@ mysql -uroot -pblueghost < /var/install/install.sql && exit
 20min - db + migrace 
 25min - make context + zacatek slug
 30min - slug podle navodu
+45min - paginace (zasek na )
 
 
 ### Příprava Dockeru a prostředí

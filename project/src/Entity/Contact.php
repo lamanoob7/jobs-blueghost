@@ -48,7 +48,7 @@ class Contact
     
     /**
      * @ORM\Column(type="string", unique=true)
-     * @Gedmo\Slug(fields={"firstName", "lastName", "id"})
+     * @Gedmo\Slug(fields={"firstName", "lastName"})
      */
    private $slug;
 
