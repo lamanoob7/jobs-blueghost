@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,15 @@ class ContactRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getListQuery($page = 1)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->addOrderBy('c.firstName', "ASC")
+            ->getQuery();
+
+        return $query;
     }
 
 //    /**
